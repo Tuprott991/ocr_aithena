@@ -71,7 +71,7 @@ class DeepSoloDetector:
             from detectron2.modeling import build_model
         except (ImportError, OSError) as exc:
             raise RuntimeError(
-                "DeepSolo native dependencies are unavailable. Follow README.md's Linux/WSL setup; "
+                f"DeepSolo native dependencies are unavailable ({exc}). Follow README.md's Linux/WSL setup; "
                 "the official CUDA extension and Detectron2 are required."
             ) from exc
 
