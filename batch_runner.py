@@ -27,12 +27,16 @@ from typing import Sequence
 import torch
 from tqdm import tqdm
 
+ROOT = Path(__file__).resolve().parent
+DEEPSOLO_ROOT = ROOT / "third_party" / "DeepSolo" / "DeepSolo"
+PARSEQ_ROOT = ROOT / "third_party" / "parseq"
+for _p in (ROOT, DEEPSOLO_ROOT, PARSEQ_ROOT):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
+
 from overlay_filter import OverlayConfig
 from pipeline import IMAGE_SUFFIXES, OCRPipeline, collect_images, natural_key
 from retrieval_exporter import convert_ocr_result_to_retrieval
-
-
-ROOT = Path(__file__).resolve().parent
 
 
 def parse_gpu_list(gpu_arg: str | None) -> list[int]:

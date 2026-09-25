@@ -14,13 +14,20 @@ import torch.nn.functional as F
 from torch.nn.init import xavier_uniform_, constant_
 from torch.autograd.function import once_differentiable
 
-from adet import _C
+try:
+    from adet import _C
+    HAS_CUDA_EXT = hasattr(_C, "ms_deform_attn_forward")
+except (ImportError, OSError):
+    _C = None
+    HAS_CUDA_EXT = False
 import sys
 
 class _MSDeformAttnFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, value, value_spatial_shapes, value_level_start_index, sampling_locations, attention_weights, im2col_step):
         ctx.im2col_step = im2col_step
+        if not HAS_CUDA_EXT or _C is None:
+            raise RuntimeError("CUDA extension _C is not available")
         output = _C.ms_deform_attn_forward(
             value, value_spatial_shapes, value_level_start_index, sampling_locations, attention_weights, ctx.im2col_step)
         ctx.save_for_backward(value, value_spatial_shapes, value_level_start_index, sampling_locations, attention_weights)
@@ -148,8 +155,12 @@ class MSDeformAttn(nn.Module):
         else:
             raise ValueError(
                 'Last dim of reference_points must be 2 or 4, but get {} instead.'.format(reference_points.shape[-1]))
-        output = _MSDeformAttnFunction.apply(
-            value, input_spatial_shapes, input_level_start_index, sampling_locations, attention_weights, self.im2col_step)
+        if HAS_CUDA_EXT and _C is not None:
+            output = _MSDeformAttnFunction.apply(
+                value, input_spatial_shapes, input_level_start_index, sampling_locations, attention_weights, self.im2col_step)
+        else:
+            output = ms_deform_attn_core_pytorch(
+                value, input_spatial_shapes, sampling_locations, attention_weights)
         output = self.output_proj(output)
         # if decoder:
         #     return output, sampling_locations, attention_weights

@@ -4,12 +4,17 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parent
+DEEPSOLO_ROOT = ROOT / "third_party" / "DeepSolo" / "DeepSolo"
+PARSEQ_ROOT = ROOT / "third_party" / "parseq"
+for _p in (ROOT, DEEPSOLO_ROOT, PARSEQ_ROOT):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
 from overlay_filter import OverlayConfig
 from pipeline import OCRPipeline, collect_images, save_json
-
-
-ROOT = Path(__file__).resolve().parent
 
 
 def build_parser() -> argparse.ArgumentParser:
