@@ -1,0 +1,16 @@
+# Install torch/torchvision and Detectron2 from the README first.
+editdistance==0.6.2
+lmdb==1.4.1
+nltk==3.7
+opencv-python-headless==4.5.5.64
+Pillow==9.2.0
+pytorch-lightning==1.6.5
+rapidfuzz==2.13.7
+scipy==1.9.3
+shapely==2.0.0
+timm==0.6.5
+tqdm==4.64.1
+PyYAML==6.0.1
+boto3>=1.26.0
+python-dotenv>=1.0.0
+huggingface-hub>=0.14.0

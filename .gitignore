@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.o
+*.pyd
+*.a
+
+# C extensions and build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Checkpoint model weights (> 100MB, local weights)
+*.pth
+*.ckpt
+*.pt
+*.bin
+*.onnx
+*.engine
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Datasets and input frame caches
+L21_V001/
+new_images_webp/
+*.webp
+*.png
+*.jpg
+*.jpeg
+!third_party/**/*.json
+!third_party/**/*.png
+!third_party/**/*.jpg
+!third_party/**/*.yaml
+!third_party/**/*.ttf
+
+# Output results and logs
+/*.json
+/*.jsonl
+ocr_results/
+vis/
+smoke_vis*/
+*.log
+.pytest_cache/
+
+# Reference clones
+Vietnamese-OCR-with-Correction/
+
+# IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
